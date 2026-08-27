@@ -1,0 +1,74 @@
+# JIT exercise: recursion, loops, short-circuiting, strings, mixed calls.
+fn fib(n) {
+  if (n < 2) {
+    return n;
+  }
+  return fib(n - 1) + fib(n - 2);
+}
+
+fn fact(n) {
+  if (n < 2) {
+    return 1;
+  }
+  return n * fact(n - 1);
+}
+
+print fib(20);   # 6765
+print fact(20);  # 2432902008176640000
+
+fn side_effect(x) {
+  print x;
+  return 0;
+}
+
+if (0 && side_effect(100)) {
+  print 999;     # never reached (short-circuit)
+}
+if (1 || side_effect(200)) {
+  print 1;
+}
+
+fn sum_odd(n) {
+  i = 1;
+  s = 0;
+  while (i <= n) {
+    s = s + i;
+    i = i + 2;
+  }
+  return s;
+}
+print sum_odd(9);  # 25
+
+fn greet() {
+  print "hello ";
+  return 7;
+}
+print greet();
+
+fn nested(a) {
+  b = a * 2;
+  while (b > 0) {
+    if (b == 4) {
+      break;
+    }
+    b = b - 1;
+  }
+  return b;
+}
+print nested(5);   # 4
+
+fn mixed(a) {
+  r = 0;
+  i = 0;
+  while (i < a) {
+    r = r + fib(i);
+    i = i + 1;
+  }
+  return r;
+}
+print mixed(10);   # 0+1+1+2+3+5+8+13+21+34 = 88
+
+fn moddiv(a, b) {
+  return a / b + a % b;
+}
+print moddiv(17, 5);   # 3 + 2 = 5

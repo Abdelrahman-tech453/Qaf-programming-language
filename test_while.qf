@@ -1,0 +1,68 @@
+# Test while loops
+
+# Basic while loop - count to 5
+i = 1;
+while (i <= 5) {
+  print i;
+  i = i + 1;
+}
+
+# While with accumulator - sum 1..10
+sum = 0;
+i = 1;
+while (i <= 10) {
+  sum = sum + i;
+  i = i + 1;
+}
+print sum;
+
+# Nested while loops - multiplication table entries
+i = 1;
+count = 0;
+while (i <= 3) {
+  j = 1;
+  while (j <= 3) {
+    count = count + 1;
+    j = j + 1;
+  }
+  i = i + 1;
+}
+print count;
+
+# While with break
+i = 0;
+while (i < 100) {
+  if (i == 7) {
+    break;
+  }
+  i = i + 1;
+}
+print i;
+
+# While with continue - sum even numbers 1..10
+sum = 0;
+i = 0;
+while (i < 10) {
+  i = i + 1;
+  if (i % 2 != 0) {
+    continue;
+  }
+  sum = sum + i;
+}
+print sum;
+
+# Nested break only breaks inner loop
+total = 0;
+i = 0;
+while (i < 3) {
+  j = 0;
+  while (j < 100) {
+    if (j == 5) {
+      break;
+    }
+    total = total + 1;
+    j = j + 1;
+  }
+  i = i + 1;
+}
+print total;

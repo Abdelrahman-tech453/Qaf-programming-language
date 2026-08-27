@@ -1,0 +1,64 @@
+# Test comparisons and if/else
+
+# Equality
+print (1 == 1);
+print (1 == 2);
+print (0 == 0);
+
+# Not equal
+print (1 != 2);
+print (1 != 1);
+
+# Less than
+print (1 < 2);
+print (2 < 1);
+print (1 < 1);
+
+# Greater than
+print (2 > 1);
+print (1 > 2);
+print (1 > 1);
+
+# Less equal
+print (1 <= 2);
+print (2 <= 2);
+print (3 <= 2);
+
+# Greater equal
+print (2 >= 1);
+print (2 >= 2);
+print (2 >= 3);
+
+# If/else
+if (1 == 1) {
+  print 100;
+}
+
+if (1 == 2) {
+  print 999;
+} else {
+  print 200;
+}
+
+# Nested if/else
+x = 15;
+if (x > 20) {
+  print 1;
+} else {
+  if (x > 10) {
+    print 2;
+  } else {
+    print 3;
+  }
+}
+
+# If with complex conditions
+a = 5;
+b = 10;
+if (a < b && b > 0) {
+  print 300;
+}
+
+if (a > b || a == 5) {
+  print 400;
+}

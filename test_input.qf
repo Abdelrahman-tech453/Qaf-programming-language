@@ -1,0 +1,6 @@
+a = read();
+
+print a;
+
+
+

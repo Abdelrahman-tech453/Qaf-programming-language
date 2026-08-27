@@ -1,0 +1,98 @@
+# stdlib.fl - Flint standard library.
+# Import with:  from stdlib import *;
+# Pure function definitions only; no top-level side effects, so importing
+# it is safe (it defines names but does not run any code).
+
+# --- Type predicates ---
+fn is_int(x)  { return type(x) == 0; }
+fn is_float(x){ return type(x) == 1; }
+fn is_bool(x) { return type(x) == 2; }
+fn is_str(x)  { return type(x) == 3; }
+fn is_list(x) { return type(x) == 4; }
+
+# --- Conversions ---
+fn to_int(x) {
+  if (is_str(x))  { return str2int(x); }
+  if (is_float(x)){ return float2int(x); }
+  return x;
+}
+
+fn to_float(x) {
+  if (is_str(x)) { return str2float(x); }
+  if (is_int(x)) { return int2float(x); }
+  return x;
+}
+
+fn to_str(x) {
+  if (is_float(x)) { return float2str(x); }
+  if (is_str(x))   { return x; }
+  return int2str(x);
+}
+
+fn to_bool(x) {
+  if (is_int(x)) { return int2bool(x); }
+  return x;
+}
+
+# --- List helpers ---
+fn first(xs) { return xs[0]; }
+fn last(xs)  { return xs[len(xs) - 1]; }
+
+fn append(xs, x) {
+  push(xs, x);
+  return xs;
+}
+
+fn contains(xs, v) {
+  i = 0;
+  n = len(xs);
+  while (i < n) {
+    if (xs[i] == v) { return true; }
+    i = i + 1;
+  }
+  return false;
+}
+
+fn sum_list(xs) {
+  i = 0;
+  n = len(xs);
+  s = 0;
+  while (i < n) {
+    s = s + xs[i];
+    i = i + 1;
+  }
+  return s;
+}
+
+fn reverse(xs) {
+  i = len(xs);
+  r = list();
+  while (i > 0) {
+    i = i - 1;
+    push(r, xs[i]);
+  }
+  return r;
+}
+
+# --- Math helpers ---
+fn square(x) { return x * x; }
+fn cube(x)   { return x * x * x; }
+
+fn gcd(a, b) {
+  while (b != 0) {
+    t = b;
+    b = a % b;
+    a = t;
+  }
+  return a;
+}
+
+fn fact(n) {
+  if (n < 2) { return 1; }
+  return n * fact(n - 1);
+}
+
+fn fib(n) {
+  if (n < 2) { return n; }
+  return fib(n - 1) + fib(n - 2);
+}

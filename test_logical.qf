@@ -1,0 +1,48 @@
+# Test boolean literals and logical operators
+
+# Booleans
+t = true;
+f = false;
+print t;       # Expected: 1
+print f;       # Expected: 0
+
+# NOT (!)
+print !true;   # Expected: 0
+print !false;  # Expected: 1
+print !0;      # Expected: 1
+print !42;     # Expected: 0
+print !!42;    # Expected: 1
+
+# AND (&&)
+print (true && true);    # Expected: 1
+print (true && false);   # Expected: 0
+print (false && true);   # Expected: 0
+print (false && false);  # Expected: 0
+
+# OR (||)
+print (true || true);    # Expected: 1
+print (true || false);   # Expected: 1
+print (false || true);   # Expected: 1
+print (false || false);  # Expected: 0
+
+# Short-circuiting verification (division by zero should NOT trigger)
+x = 0;
+if (false && (10 / 0 == 1)) {
+  print 999;
+} else {
+  print 100;   # Expected: 100
+}
+
+if (true || (10 / 0 == 1)) {
+  print 200;   # Expected: 200
+} else {
+  print 999;
+}
+
+# Complex precedence: || has lower precedence than &&, which is lower than comparisons
+a = 1;
+b = 2;
+c = 3;
+if (a < b && b < c || a == 100) {
+  print 300;   # Expected: 300
+}

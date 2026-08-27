@@ -1,0 +1,5 @@
+# Test importing a single function from another file
+from test_functions import add
+
+print add(17, 25); # Expected: 42
+print add(3, 4);   # Expected: 7

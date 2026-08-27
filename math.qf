@@ -1,0 +1,82 @@
+fn prime_count(i, n){
+  while (i <= n) {
+    isprime = 1;
+    d = 2;
+    while (d * d <= i) {
+      if (i % d == 0) {
+       isprime = 0;
+      }
+      d = d + 1;
+    }
+    if (isprime == 1) {
+      print i;
+    }
+    i = i + 1;
+  }
+}
+
+fn multiply(x,y){
+  return x * y;
+}
+
+
+fn cube(x){
+  return x * x * x;
+}
+
+fn square(x){
+  return x * x;
+}
+
+fn count(a, b){
+  while(a <= b){
+    a = a + 1;
+    if(a == b){
+      break;
+    }
+  }
+
+  return a;
+}
+
+fn add4(a,b,c,d){
+  return a + b + c + d;
+}
+fn add(a, b) {
+  return a + b;
+}
+
+fn gcd(a, b) {
+  while (b != 0) {
+    t = b;
+    b = a % b;
+    a = t;
+  }
+  return a;
+}
+
+fn fact(n) {
+  if (n <= 1) {
+    return 1;
+  }
+  return n * fact(n - 1);
+}
+
+fn fib(n) {
+  if (n <= 0) {
+    return 0;
+  }
+  if (n == 1) {
+    return 1;
+  }
+  return fib(n - 1) + fib(n - 2);
+}
+
+fn poly(x, a, b, c) {
+  return a * x * x + b * x + c;
+}
+
+
+fn random(x){
+  return x;
+}

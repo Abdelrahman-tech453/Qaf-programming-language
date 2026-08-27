@@ -1,0 +1,35 @@
+# demo.fl - runnable demonstration of the Flint standard library.
+# Run with: ./flint demo.fl   (or: ./flint demo.fl nojit)
+# It imports the library and prints the results of exercising it.
+
+from stdlib import *;
+
+# --- Type predicates ---
+print is_int(5);
+print is_float(3.14);
+print is_bool(true);
+print is_str("hi");
+print is_list(list(1, 2));
+
+# --- Conversions ---
+print to_int("42");
+print to_float("3.5");
+print to_str(7);
+print to_str(3.14);
+print to_bool(0);
+
+# --- Math helpers ---
+print square(5);
+print cube(3);
+print gcd(48, 18);
+print fact(5);
+print fib(10);
+
+# --- List helpers ---
+xs = list(1, 2, 3, 4);
+print first(xs);
+print last(xs);
+print contains(xs, 3);
+print contains(xs, 9);
+print sum_list(xs);
+print reverse(xs);

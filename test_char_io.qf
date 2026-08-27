@@ -1,0 +1,17 @@
+# Test Character I/O (putchar)
+
+# Print alphabet A through Z
+c = 65;
+while (c <= 90) {
+  putchar(c);
+  c = c + 1;
+}
+putchar(10); # newline
+
+# Print numbers 0 through 9
+d = 48;
+while (d <= 57) {
+  putchar(d);
+  d = d + 1;
+}
+putchar(10); # newline

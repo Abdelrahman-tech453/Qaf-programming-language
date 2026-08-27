@@ -1,0 +1,19 @@
+# String operations test (Python-like: characters are 1-char strings)
+s = "hello";
+print len(s);
+print s[0];
+print s[4];
+print str_get(s, 1);
+t = str_set(s, 0, "H");
+print t;
+print s;
+u = str_set(s, 1, 69);
+print u;
+print concat("foo", "bar");
+print concat("a", "b", "c");
+print concat("x", "y", "z", "!");
+print char(65);
+print concat("x", char(66));
+print type(s);
+print type(s[0]);
+print concat(concat("a", "b"), "c");

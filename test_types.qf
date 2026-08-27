@@ -1,0 +1,55 @@
+# test_types.fl - exercise the Flint type system and conversions.
+# make test only checks the exit code, but the outputs below document intent.
+
+# type() tags: int=0, float=1, bool=2, str=3, list=4
+print type(5);
+print type(3.14);
+print type(true);
+print type("hi");
+print type(list());
+
+# numeric conversions
+print int2str(123);
+print float2str(3.5);
+print str2int("99");
+print str2float("2.25");
+print int2float(7);
+print float2int(9.9);
+print bool2int(true);
+print int2bool(0);
+print char(90);
+
+# string char model: characters are 1-char strings (Python-like)
+s = "hello";
+c = s[0];
+print type(c);
+print str_get(s, 1);
+print str_set(s, 0, "H");
+print str_set(s, 2, 88);
+
+# concatenation vs arithmetic
+print concat("a", "b");
+print 1 + 2;
+print 1.5 + 2.0;
+
+# lists and index assignment
+xs = list(10, 20, 30);
+print len(xs);
+print xs[1];
+xs[0] = 99;
+print xs;
+push(xs, 40);
+print xs;
+print pop(xs);
+print xs;
+
+# library predicates (from stdlib.fl)
+from stdlib import *;
+print is_int(5);
+print is_float(3.14);
+print is_str("x");
+print is_bool(false);
+print is_list(list(1));
+print to_int("7");
+print to_str(3.14);
+print to_bool(1);

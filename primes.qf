@@ -1,0 +1,20 @@
+# primes up to 50, by trial division
+
+fn prime_count(i, n){
+  while (i <= n) {
+    isprime = 1;
+    d = 2;
+    while (d * d <= i) {
+      if (i % d == 0) {
+       isprime = 0;
+      }
+      d = d + 1;
+    }
+    if (isprime == 1) {
+      print i;
+    }
+    i = i + 1;
+  }
+}
+
+print prime_count(2,50);

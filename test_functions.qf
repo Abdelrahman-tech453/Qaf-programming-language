@@ -1,0 +1,35 @@
+# Library of functions used by the import tests.
+fn add(a, b) {
+  return a + b;
+}
+
+fn gcd(a, b) {
+  while (b != 0) {
+    t = b;
+    b = a % b;
+    a = t;
+  }
+  return a;
+}
+
+fn fact(n) {
+  if (n < 2) {
+    return 1;
+  }
+  return n * fact(n - 1);
+}
+
+fn fib(n) {
+  if (n < 2) {
+    return n;
+  }
+  return fib(n - 1) + fib(n - 2);
+}
+
+fn poly(x) {
+  return x * x + 2 * x + 1;
+}
+
+fn no_return(x) {
+  y = x + 1;
+}

@@ -1,0 +1,12 @@
+# Test importing multiple names and using an imported function
+# inside a locally-defined function
+from test_functions import gcd, fact
+
+print gcd(101, 10); # Expected: 1
+print fact(7);      # Expected: 5040
+
+fn twice(x) {
+  return fact(x) * 2;
+}
+
+print twice(4);     # Expected: 48

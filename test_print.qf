@@ -1,0 +1,29 @@
+# Test print statement for integers
+
+# Positive numbers
+print 0;
+print 1;
+print 42;
+print 9999;
+print 1000000;
+
+# Negative numbers
+print 0 - 1;
+print 0 - 42;
+print 0 - 9999;
+
+# Expressions
+print 2 + 3;
+print 10 - 7;
+print 6 * 7;
+print 100 / 4;
+print 17 % 5;
+
+# Nested expressions
+print (2 + 3) * (4 + 1);
+print 10 - 2 * 3;
+print (10 - 2) * 3;
+
+# Unary negation
+x = 5;
+print 0 - x;

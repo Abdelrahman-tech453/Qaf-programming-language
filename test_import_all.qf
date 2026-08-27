@@ -1,0 +1,6 @@
+# Test importing all functions with "*"
+from test_functions import *
+
+print gcd(48, 18); # Expected: 6
+print fact(5);     # Expected: 120
+print fib(10);     # Expected: 55

@@ -1,0 +1,36 @@
+from math import *
+
+
+
+
+
+fn perceptron3i(xo, xt, xth, t, lr){
+	wo = 0.5;
+	wt = 0.3;
+	wth = 0.8;
+	b = 0.01;
+	y = add4(multiply(xo, wo) , multiply(xt, wt) , multiply(xth, wth) , b);
+	e = t - y;
+	if(y <= 0){
+		y = 0;
+	}
+	else{
+		y = 1;
+	}
+	return y;
+	if(y != t){
+		wo = wo + lr * e * xo;
+		wt = wt + lr * e * xt;
+		wth = wth + lr * e * xth;
+
+	}
+
+	print "w1";
+	return wo;
+	print "w2";
+	return wt;
+	print "w3";
+	return wth;
+}
+
+
