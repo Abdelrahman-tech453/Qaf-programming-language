@@ -1,0 +1,51 @@
+%YAML 1.2
+---
+name: Qaf
+file_extensions:
+  - qf
+scope: source.qaf
+contexts:
+  main:
+    - include: comments
+    - include: strings
+    - include: numbers
+    - include: keywords
+    - include: types
+    - include: functions
+    - include: operators
+    - include: constants
+  comments:
+    - match: '#'
+      scope: punctuation.definition.comment.qaf
+      push:
+        - meta_scope: comment.line.number-sign.qaf
+        - match: $
+          pop: true
+  strings:
+    - match: '"'
+      scope: punctuation.definition.string.begin.qaf
+      push:
+        - meta_scope: string.quoted.double.qaf
+        - match: '\\.'
+          scope: constant.character.escape.qaf
+        - match: '"'
+          scope: punctuation.definition.string.end.qaf
+          pop: true
+  numbers:
+    - match: '\b\d+(?:\.\d+)?\b'
+      scope: constant.numeric.qaf
+  keywords:
+    - match: '\b(?:fn|let|if|else|while|for|return|break|continue|import|from|as)\b'
+      scope: keyword.control.qaf
+  types:
+    - match: '\b(?:i8|i16|i32|i64|u8|u16|u32|u64|f32|f64|bool|char|string)\b'
+      scope: storage.type.qaf
+  functions:
+    - match: '\b[A-Za-z_][A-Za-z0-9_]*(?=\s*\()'
+      scope: entity.name.function.qaf
+  operators:
+    - match: '==|!=|<=|>=|&&|\|\||[+\-*/%<>=!]'
+      scope: keyword.operator.qaf
+  constants:
+    - match: '\b(?:true|false)\b'
+      scope: constant.language.qaf
