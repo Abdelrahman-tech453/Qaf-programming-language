@@ -18,7 +18,7 @@ Hello, Qaf!
 
 ## Table of contents
 
-1. [Build & run](#build--run)
+1. [Install & run](#Install--run)
 2. [Your first program](#your-first-program)
 3. [Language overview](#language-overview)
 4. [Types](#types)
@@ -38,13 +38,12 @@ Hello, Qaf!
 
 ---
 
-## Build & run
+## Install & run
 
 ```bash
-make            # assemble + link the qafc binary
-make test       # run the whole test suite in JIT and no-JIT modes
-./qafc prog.qf           # run with the JIT (default, faster)
-./qafc prog.qf nojit     # run with the tree-walking interpreter
+chmod +x ~/Qaf-programming-language/qafc
+sudo ln -s ~/Qaf-programming-language/qafc /usr/local/bin/qaf
+qaf primes.qf
 ```
 
 Manual build:
@@ -55,11 +54,7 @@ ld -o qafc qafc.o
 ./qafc prog.qf
 ```
 
-> **Note on the executable name.** This repository already contains an unrelated
-> `qaf/` directory (a separate borrow-checking compiler project), so the Qaf
-> executable is named **`qafc`** to avoid clobbering it. The *language* is
-> called **Qaf** and its files use the **`.qf`** extension — only the binary's
-> filename is `qafc`.
+
 
 No NASM, no cross-compiler, no dependencies beyond binutils.
 
