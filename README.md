@@ -6,7 +6,7 @@ evaluator, and JIT are all assembly — there is no libc and no runtime
 underneath; every I/O operation is a raw Linux syscall. Qaf source files use
 the **`.qf`** extension and are run with the **`qafc`** executable.
 
-Built and tested on x86-64 Linux with GNU `as`/`ld` (Intel syntax via
+Built and tested on x86-64 Linux with GNU `as`/`ld` (Intel syntax via 
 `.intel_syntax noprefix`).
 
 ```
@@ -17,7 +17,6 @@ Hello, Qaf!
 ---
 
 ## Table of contents
-
 1. [Build & run](#build--run)
 2. [Documentation](#documentation)
 3. [Interactive REPL](#interactive-repl)
@@ -40,7 +39,7 @@ Hello, Qaf!
 
 ---
 
-## Build & run
+## Install & run
 
 ### Install (recommended)
 
