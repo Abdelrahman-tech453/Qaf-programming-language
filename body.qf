@@ -1,4 +1,0 @@
-from perceptron import *
-
-
-print perceptron3i(0.2,0.2,0.2,0,0.1);

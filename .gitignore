@@ -1,0 +1,10 @@
+# Build artifacts
+/qafc
+/qafc.o
+*.o
+
+# Editor / OS noise
+*.swp
+*.swo
+*~
+.DS_Store

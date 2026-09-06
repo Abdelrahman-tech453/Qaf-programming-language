@@ -1,0 +1,36 @@
+# tui_calculator.qf - a tiny interactive integer calculator (simple TUI)
+# Run:  ./qafc tui_calculator.qf
+# For each line enter:  <a> <op> <b>   (three integers)
+#   op: 1=+  2=-  3=*  4=/
+#   a=0 op=0 b=0 quits.
+
+print "== Qaf calculator (a op b) ==";
+print "op codes: 1=+ 2=- 3=* 4=/   0 0 0 quits";
+run = 1;
+while (run == 1) {
+  print "> ";
+  a = read();
+  op = read();
+  b = read();
+  if (a == 0 && op == 0 && b == 0) {
+    run = 0;
+  }
+  if (op == 1) {
+    print a + b;
+  }
+  if (op == 2) {
+    print a - b;
+  }
+  if (op == 3) {
+    print a * b;
+  }
+  if (op == 4) {
+    if (b == 0) {
+      print "division by zero";
+    }
+    else {
+      print a / b;
+    }
+  }
+}
+print "bye";
