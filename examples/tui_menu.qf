@@ -1,0 +1,32 @@
+# tui_menu.qf - a minimal text-mode menu (simple TUI)
+# Run:  ./qafc tui_menu.qf
+# Enter a menu number and press Enter. 0 quits.
+
+print "== Qaf menu demo ==";
+run = 1;
+while (run == 1) {
+  print "1) greet   2) square   3) double   0) quit";
+  print "choice? ";
+  c = read();
+  if (c == 0) {
+    run = 0;
+  }
+  if (c == 1) {
+    print "Hello from Qaf!";
+  }
+  if (c == 2) {
+    print "enter n: ";
+    n = read();
+    print n * n;
+  }
+  if (c == 3) {
+    print "enter n: ";
+    n = read();
+    print n * 2;
+  }
+  if (c > 3) {
+    print "unknown option";
+  }
+  print "";   # blank line between menus
+}
+print "bye";

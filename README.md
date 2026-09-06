@@ -19,41 +19,89 @@ Hello, Qaf!
 ## Table of contents
 
 1. [Build & run](#build--run)
-2. [Your first program](#your-first-program)
-3. [Language overview](#language-overview)
-4. [Types](#types)
-5. [Variables & constants](#variables--constants)
-6. [Operators](#operators)
-7. [Strings](#strings)
-8. [Lists](#lists)
-9. [Functions](#functions)
-10. [Control flow](#control-flow)
-11. [Imports / modules](#imports--modules)
-12. [Built-in functions](#built-in-functions)
-13. [Standard library (`stdlib.qf`)](#standard-library-stdlibqf)
-14. [Examples](#examples)
-15. [JIT vs interpreter](#jit-vs-interpreter)
-16. [Architecture](#architecture)
-17. [Limitations & roadmap](#limitations--roadmap)
+2. [Documentation](#documentation)
+3. [Interactive REPL](#interactive-repl)
+4. [Your first program](#your-first-program)
+5. [Language overview](#language-overview)
+6. [Types](#types)
+7. [Variables & constants](#variables--constants)
+8. [Operators](#operators)
+9. [Strings](#strings)
+10. [Lists](#lists)
+11. [Functions](#functions)
+12. [Control flow](#control-flow)
+13. [Imports / modules](#imports--modules)
+14. [Built-in functions](#built-in-functions)
+15. [Standard library (`stdlib.qf`)](#standard-library-stdlibqf)
+16. [Examples](#examples)
+17. [JIT vs interpreter](#jit-vs-interpreter)
+18. [Architecture](#architecture)
+19. [Limitations & roadmap](#limitations--roadmap)
 
 ---
 
 ## Build & run
+
+### Install (recommended)
+
+One script gets you a built, tested, installed `qafc` plus a handy `qaf`
+command:
+
+```bash
+git clone https://github.com/Abdelrahman-tech453/Qaf-programming-language.git
+cd Qaf-programming-language
+./install.sh                     # build + test + install (needs binutils & make)
+```
+
+`install.sh` checks the platform, the build dependencies (binutils, `make`),
+and the optional ones (OpenCL loader, ICD vendors, GPU render node); runs the
+full test suite; installs `qafc` + the `qaf` command + the standard library +
+examples; and then verifies the installed copy end-to-end from a neutral
+directory (imports, examples, REPL).
+
+By default it installs under `/usr/local` (use `./install.sh --prefix ~/qaf`
+for a custom prefix, or a fallback to `~/.local` is automatic when
+`/usr/local` is not writable). Remove everything with `./install.sh --uninstall`.
+
+### Build manually
 
 ```bash
 make            # assemble + link the qafc binary
 make test       # run the whole test suite in JIT and no-JIT modes
 ./qafc prog.qf           # run with the JIT (default, faster)
 ./qafc prog.qf nojit     # run with the tree-walking interpreter
+./qafc                   # drop into the interactive REPL (also: ./qafc repl)
 ```
+
+`qaf` is simply a symbolic link to `qafc` — `qaf prog.qf`, `qaf` (REPL) and
+`qaf repl` all work.
 
 Manual build:
 
 ```bash
-as --64 qaf.s -o qafc.o
+as --64 -I src src/qaf.s -o qafc.o
 ld -o qafc qafc.o
 ./qafc prog.qf
 ```
+
+Source layout under `src/` is modular — one file per compiler stage, all
+spliced together by `src/qaf.s` with `.include`:
+
+| File | Contents |
+|------|----------|
+| `src/qaf.s` | master module that `.include`s everything below |
+| `src/defs.s` | symbolic constants (`.equ`) |
+| `src/bss.s` | global storage |
+| `src/data.s` | read-only strings and fixed instruction encodings |
+| `src/syscalls.s` | I/O wrappers, `load_import`, error handlers |
+| `src/lexer.s` | source text → tokens |
+| `src/parser.s` | tokens → AST |
+| `src/imports.s` | module path resolution (CWD + main dir + qafc dir + `lib/`) |
+| `src/eval.s` | tree-walking evaluator + executor |
+| `src/runtime.s` | value helpers shared by interpreter and JIT |
+| `src/jit.s` | native-code compiler |
+| `src/repl.s` | interactive REPL |
+| `src/main.s` | `_start` entry point |
 
 > **Note on the executable name.** This repository already contains an unrelated
 > `qaf/` directory (a separate borrow-checking compiler project), so the Qaf
@@ -62,6 +110,66 @@ ld -o qafc qafc.o
 > filename is `qafc`.
 
 No NASM, no cross-compiler, no dependencies beyond binutils.
+
+---
+
+## Documentation
+
+Full documentation lives in `docs/` — a course and an exhaustive reference:
+
+| Doc | Covers |
+|-----|--------|
+| [Getting started](docs/getting-started.md) | install, build, run your first program, the REPL |
+| [The Qaf guide](docs/guide.md) | the hands-on course: `print` → complete programs, every construct |
+| [Quick reference](docs/reference.md) | the complete syntax on one page |
+| [Types & values](docs/types.md) | the five value types and the numeric model |
+| [Built-in functions](docs/builtins.md) | every native builtin + `stdlib.qf` / `math.qf` reference |
+| [Imports & modules](docs/imports.md) | the module system and resolution order |
+| [The interactive REPL](docs/repl.md) | the `qafc` shell |
+| [Architecture](docs/architecture.md) | lexer → parser → eval/JIT internals |
+| [GPU support](docs/gpu.md) | the Vulkan / OpenCL / OpenGL roadmap |
+
+Repository layout:
+
+```
+qafc            the compiler/interpreter binary
+src/            assembly source — one module per pipeline stage
+lib/            the standard library (stdlib.qf, math.qf) — importable from anywhere
+examples/       example programs
+tests/          the test suite (make test)
+docs/           this documentation
+qaf-highlighting/  editor syntax files
+```
+
+---
+
+## Interactive REPL
+
+Run `qafc` with no arguments (or `./qafc repl`) for an interactive shell.
+Each line is tokenized, parsed, and executed immediately; errors print a
+message and let you keep going instead of killing the process.
+
+```
+$ ./qafc
+Qaf interactive shell
+qaf> print 1 + 2;
+3
+qaf> fn sq(x) { return x * x; }
+qaf> print sq(9);
+81
+qaf> x = 10;
+qaf> print x * 2;
+20
+qaf> print 1 / 0;
+qaf: division by zero
+qaf> print "still alive";
+still alive
+qaf> [Ctrl+D]
+```
+
+State persists across lines — variables, functions, lists, and strings defined
+earlier stay available. The REPL runs in interpreter mode (the JIT is used only
+for whole-program runs).
 
 ---
 
@@ -121,7 +229,7 @@ Qaf is an imperative language with:
 - `from ... import ...` for multi-file programs.
 
 It is Turing-complete and enough to write real (if simple) programs, including
-small neural-network demos (see `perceptron.qf`).
+small neural-network demos (see `examples/perceptron.qf`).
 
 ---
 
@@ -229,7 +337,7 @@ print xs;              # [99, 20, 30]
 ```
 
 Lists nest, so matrices are lists of row-lists (see the NN example in
-`perceptron.qf` and the math notes below).
+`examples/perceptron.qf` and the math notes below).
 
 ---
 
@@ -298,14 +406,20 @@ from test_functions import gcd, fact;  # import only named functions
 
 - `from <module> import *` imports **every** function `<module>.qf` defines.
 - `from <module> import a, b` imports only `a` and `b`.
-- The loader resolves a module name to `<module>.qf` in the same directory.
+- **Module resolution** searches, in order: the current working directory, the
+  directory containing the top-level program file, the directory containing the
+  `qafc` executable, **`<qafc dir>/lib`**, and **`<parent of qafc dir>/lib/qaf`**
+  — each tried with the bare name and with a `.qf` suffix. That covers running
+  `qafc` from the repository (`./lib`) and from an installed copy
+  (`$prefix/lib/qaf`), with modules next to your program always found first. A
+  module in the working directory shadows everything else.
 - Imported files are processed at parse time: only their **function
   definitions** are registered — their top-level statements are not executed.
   This makes library files safe to import.
 - Imports can nest; an unresolvable import reports `qaf: cannot open file`.
 
-See `stdlib.qf` (the standard library) and `demo.qf` (a runnable showcase that
-does `from stdlib import *`).
+See `lib/stdlib.qf` (the standard library) and `examples/demo.qf` (a runnable
+showcase that does `from stdlib import *`).
 
 ---
 
@@ -358,9 +472,9 @@ does `from stdlib import *`).
 
 ---
 
-## Standard library (`stdlib.qf`)
+## Standard library (`lib/stdlib.qf`)
 
-`stdlib.qf` is a clean, importable library. Import it with
+`lib/stdlib.qf` is a clean, importable library. Import it with
 `from stdlib import *`.
 
 **Type predicates**
@@ -391,25 +505,29 @@ sum_list(xs) reverse(xs)
 square(x)  cube(x)  gcd(a, b)  fact(n)  fib(n)
 ```
 
-`demo.qf` exercises all of these (run `./qafc demo.qf`).
+`examples/demo.qf` exercises all of these (run `./qafc examples/demo.qf`).
 
 ---
 
 ## Examples
 
-The repository ships several example and test programs (all `.qf`):
+The repository ships example programs (`examples/`), library modules (`lib/`),
+and the test suite (`tests/`, driven by `make test`):
 
 | File | What it shows |
 |------|---------------|
-| `fib.qf` | first Fibonacci numbers |
-| `fact.qf` | factorial |
-| `primes.qf` | primes up to 50 |
-| `collatz.qf` | Collatz step count from 27 |
-| `demo.qf` | runnable showcase of `stdlib.qf` |
-| `math.qf` | reusable math helpers used by other modules |
-| `perceptron.qf` | a tiny feed-forward neural-network style function (imports `math`) |
-| `body.qf` | imports `perceptron` + `math` and runs an inference |
-| `test_*.qf` | the test suite (`make test`) |
+| `examples/fib.qf` | first Fibonacci numbers |
+| `examples/fact.qf` | factorial |
+| `examples/primes.qf` | primes up to 50 |
+| `examples/collatz.qf` | Collatz step count from 27 |
+| `examples/demo.qf` | runnable showcase of `stdlib.qf` |
+| `examples/perceptron.qf` | a tiny feed-forward neural-network style function (imports `math`) |
+| `examples/body.qf` | imports `perceptron` + `math` and runs an inference / stress test |
+| `examples/tui_menu.qf` | a simple interactive text menu (uses `read`/`print`) |
+| `examples/tui_calculator.qf` | a tiny interactive integer calculator |
+| `lib/stdlib.qf` | the standard library (importable from anywhere) |
+| `lib/math.qf` | reusable math helpers used by modules |
+| `tests/test_*.qf` | the test suite (`make test`) |
 
 A neural-network flavored snippet (from `perceptron.qf`):
 
@@ -455,12 +573,14 @@ lists) use a bump allocator backed by `sys_brk`.
 - `call_stack` / `call_depth` — isolated activation frames with parameter and
   local variable storage per depth level.
 
-**Lexer** (`tokenize`) walks the source once, tracking line numbers.
-**Parser** is recursive-descent with precedence climbing. **Evaluator**
-(`eval` / `exec_stmt` / `exec_list`) is a tree walk; statements return status
-codes (`0 = OK`, `1 = BREAK`, `2 = CONTINUE`, `3 = RETURN`). **JIT**
-(`jit_compile`) translates each function into native code, reusing the same
-runtime helpers so value semantics match exactly.
+**Lexer** (`src/lexer.s`, `tokenize`) walks the source once, tracking line
+numbers. **Parser** (`src/parser.s`) is recursive-descent with precedence
+climbing; `src/imports.s` handles module path resolution. **Evaluator**
+(`src/eval.s`: `eval` / `exec_stmt` / `exec_list`) is a tree walk; statements
+return status codes (`0 = OK`, `1 = BREAK`, `2 = CONTINUE`, `3 = RETURN`).
+**JIT** (`src/jit.s`: `jit_compile`) translates each function into native code,
+reusing the same runtime helpers (`src/runtime.s`) so value semantics match
+exactly. `src/repl.s` hosts the interactive shell described above.
 
 ---
 
